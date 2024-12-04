@@ -1,26 +1,29 @@
 <?php
-require_once('api.php');
-$API = new RouterosAPI();
+ require_once('api.php');
+ $API = new RouterosAPI();
 
-if ($API->connect("5.5.5.1", "admin", "02010018772")) {
-   
-    
-    $actie = $API->comm('/ip/hotspot/active/print');
-	// echo "<pre>";
-	// print_r($actie);
-	// echo "</pre>";
-   
-    $n = 0;
-    while ($n < count($actie)) {
-    // echo $actie[$n]['user'] . "<br>"; 
+$ip = strip_tags($_POST['ip']);
+$user = strip_tags($_POST['user']);
+$password = strip_tags($_POST['password']);
 
-    $data[] = $actie[$n] ;
-    $n++;
-   }
-   echo "<pre>";
-   print_r(json_encode($data));
-   echo "</pre><br>";
-  
+if ($API->connect("$ip", "$user", "$password")) {
+    $respones = [
+        "status"=> true,
+        "msg"=>"good"
+    ];
+
+    print_r(json_encode($respones));
+
+} else {
+   
+
+    $respones = [
+        "status"=> false,
+        "msg"=>"no user name or password"
+    ];
+    print_r(json_encode($respones));
 }
+
+
 
 ?>
